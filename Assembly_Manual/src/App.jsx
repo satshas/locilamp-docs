@@ -42,17 +42,20 @@ export default function App() {
 
     const reset = useInterface((state) => state.resetCamera)
 
+      
     return <>
 
         <Fragment>
-            <aside className="stepNavi">
-                <MemoizedStepNavigationMenu />
-            </aside>
+                
+            {/* <aside > */}
+                <MemoizedStepNavigationMenu />                    
+            {/* </aside> */}
             <section id="currentStepArea">
-                <nav className='currentStepBar' >
-                    <h2 id="stepTitleArea">
+                <h2 id="stepTitleArea">
                         <StepTitle />
                     </h2>
+                <nav className='currentStepBar' >
+                    
                     <div id="stepControl">
                         <ButtonNext />
                         {/*                             <button id="previousStep" className="btn" type="reset">&#10094; Previous</button>
@@ -120,7 +123,7 @@ export default function App() {
                         onClick={reset}
                     ><MdViewInAr /> Reset Camera</button>
                     <ButtonPartsOut />
-                    {/* <RemarksBox /> */}
+                     <RemarksBox /> 
                     {/* <HowToBox /> */}
 
                 </article>

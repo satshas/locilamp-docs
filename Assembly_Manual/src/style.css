@@ -85,6 +85,38 @@
     color: white;
 }
 
+
+.stepNaviBtnMobile {
+    background-color: rgb(255, 255, 255);
+     border: 0px solid black;
+    color: rgb(0, 0, 0);
+    /* White text */
+    padding: 8px 10px;
+    /* Some padding */
+    font-size: 15px;
+    /* Set a font size */
+    font-family: Barlow;
+    cursor: pointer;
+    /* Mouse pointer on hover */
+    width: 100%;
+    text-align: left;
+/*     margin-bottom: -1px;
+ */    
+}
+
+.stepNaviBtnMobile:hover {
+    background-color: #d6d6d6;
+    color: rgb(0, 0, 0);
+ 
+
+}
+
+.stepNaviBtnMobile:active {
+    background-color: #3e3e3e;
+    color: white;
+
+}
+
 .parts {
     background-color: rgb(255, 255, 255);
     border: 0px solid black;
@@ -132,6 +164,27 @@
     background-color: #000000;
     color: white;
 }
+.hamburgerStepNavi {
+    border: 1;
+    height: 40px;
+    width: 40px;
+    padding: 0.5rem;
+    border-radius: 00%;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    position: absolute;
+  left: 16px;
+  top: 60px;
+    transform: translateY(-50%);
+    display: none;
+}
+
+.hamburgerStepNavi:hover {
+    background-color: #000000;
+    color: white;
+}
 
 .active {
     background-color: #000000;
@@ -167,6 +220,7 @@
     /* Mouse pointer on hover */
     width: auto;
     margin-right: 10px;
+    display: none;
 }
 
 .remarksContent {
@@ -177,11 +231,13 @@
     font-family: Barlow;
     font-size: medium;
     top: 60px;
+    display: none;
 
 }
 
 .remarksContent li {
     list-style-type: none;
+    margin: 10px;
     padding: 10px;
     width: 180px;
     background-color: #ffffff;
@@ -229,7 +285,9 @@
 .stepNavi {
     position: fixed;
     flex: 1;
-    padding: 16px;
+    padding-left: 16px;
+        padding-right: 16px;
+
     overflow: auto;
     display: flex;
     flex-direction: column;
@@ -238,11 +296,41 @@
 
 }
 
+
 .stepNavi ul {
     overflow: auto;
 }
 
 .stepNavi li {
+    font-family: Barlow;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+
+.stepNaviMobile {
+    position: absolute;
+    flex: 1;
+    padding-left: 16px;
+    padding-right: 16px;
+margin-top: 60px;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    height: calc(100% - 110px);
+ z-index: 100;
+}
+
+
+.stepNaviMobile ul {
+    overflow: auto;
+    border: 2px solid black;
+}
+
+.stepNaviMobile li {
     font-family: Barlow;
     list-style-type: none;
     margin: 0;
@@ -310,22 +398,25 @@ h2 {
 }
 
 
-.navLogo {
+.mainLogo {
     height: 25px;
-    /*     float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center; */
+    display: block;
+}
+.reducedLogo {
+    height: 25px;
+    display: none
 }
 
 .Title {
+    position: absolute;
     text-align: center;
     align-self: center;
-    margin-left: 80px;
+    /* margin-left: 80px; */
     font-family: Barlow;
     font-size: 30px;
-    display: flex;
-    overflow: hidden;
+/*     display: flex;
+ */    overflow: hidden;
+ width: 100%;
 }
 
 /* #info {
@@ -461,6 +552,12 @@ h2 {
     font-size: medium;
 }
 
+    #RemarksTitle{
+        margin: 'auto';
+        display: 'inline';
+        
+    }
+
 .stepRemarksArea {
     margin-top: 30px;
     display: block;
@@ -474,22 +571,86 @@ h2 {
 }
 
 /* Media queries for responsiveness */
-@media screen and (max-width: 680px) {
-    .navMenu ul {
+@media screen and (max-width: 890px) {
+      .navMenu ul {
         display: none;
     }
-
-    .Title {
-        display: none;
-    }
-
-    .hamburger {
+/*     .hamburger {
         display: block;
+    } */
+    .hamburgerStepNavi {
+        display: inline;
+        position: absolute;
+        margin-top: 36px;
+        z-index: 100;
+    }
+
+    .stepNavi {
+        display: none;
+        position: static;
     }
 
     .menu {
         display: flex;
         align-items: center;
+    }
+
+        #currentStepArea{
+    margin-left: 70px;
+    /*     display: block; */
+    margin-right: 20px;
+    }
+
+}
+@media screen and (max-width: 720px) {
+    .mainLogo{
+        display: none;
+    }
+    .reducedLogo{
+        display: block;
+    }
+    #stepTitleArea{
+        display: block;
+        position: absolute;
+        margin-top: 50px;
+        width: 100%;
+        order:1;
+        font-size: 22px;
+    }
+    .currentStepBar{
+        position: absolute;
+        float: right;
+        margin-right: 16px;
+        display: block;
+    }
+    #currentStepArea{
+        margin-left: 16px;
+        margin-right: 16px;
+        position: relative;
+        display: flex;
+        width: calc(100% - 30px);
+
+    }
+    .infoColumn{
+        position: absolute;
+        display: block;
+        height: 150px;
+         order: 2; 
+                 margin-top: 90px;
+                 width: 100%;
+                 overflow: auto;
+
+    }
+    #viewArea {
+        display:block;
+        width: calc(100% - 30px);
+        height: calc(100% - 350px);
+        position: fixed;
+        padding: 0px;
+        order: 3;
+        bottom: 16px;
+
+
     }
 
     #HowToImgArea {
@@ -500,6 +661,21 @@ h2 {
         width: 100%;
     }
 
+    .remarksCollapsible{
+        display: flex;
+
+    }
+    .remarksContent{
+        display: block;
+    }
+    .stepRemarksArea{
+        display: none;
+    }
+    #RemarksTitle{
+        display: none;
+    }
+
+    
 }
 
 /*Scroll Bar Styling*/

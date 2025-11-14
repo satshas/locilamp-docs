@@ -67,10 +67,11 @@ export default function Header() {
 
     return <>
         <HeaderBar>
-            <div>
-                <img src="./InMachines_Logo_positive_RGB.svg" className="navLogo" id="mainLogo" />
+            <div >
+                <img src="./InMachines_Logo_positive_RGB.svg"  className="mainLogo" />
+                <img src="./InMachines_Logo_positive_RGB_r.svg" className="reducedLogo" />
             </div>
-            <div><h1 className="Title" >Tchibo Locilamp</h1></div>
+            <h1 className="Title" >Tchibo Locilamp</h1>
 
             <div className="navMenu" >
 {/*                 <ul >

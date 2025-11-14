@@ -77,7 +77,7 @@ export default function StepRemarks() {
 
     return <>
         {stepRemarks ? <div>
-            <div id='RemarksTitle' style={{ margin: 'auto', display: 'inline', alignContent: 'baseline', visibility: `${boxVisibility}` }} >
+            <div id='RemarksTitle' style={{ alignContent: 'baseline', visibility: `${boxVisibility}` }} >
                 <h3> <LuAlertCircle /> Remarks</h3> <br />
             </div>
             <ul>

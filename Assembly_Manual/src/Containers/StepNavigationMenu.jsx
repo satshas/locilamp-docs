@@ -1,5 +1,6 @@
 import React, { useRef, useEffect, useContext, useState } from "react";
 import { ModelContext } from "/Components/ModelContext.jsx";
+import { MdClose, MdMenu } from "react-icons/md";
 
 
 export default function StepNavigationMenu() {
@@ -12,8 +13,32 @@ export default function StepNavigationMenu() {
         const tempArray = [...Array(stepList.length)]
     }
 
+
+ const [isShown, setIsShown] = useState(false);
+
+    const toggleMobileMenu = () => {
+        setIsShown(!isShown);
+    };
+
+     useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 890) {
+        setIsShown(false);
+      } 
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+ 
     return (
-        <div >
+        <>
+          <button className='hamburgerStepNavi' onClick={toggleMobileMenu}>
+                         {isShown ? <MdClose />: <MdMenu />}
+                    </button>
+        <div className={isShown? 'stepNaviMobile': 'stepNavi'} >
             <ul>
                 {stepList ? stepList.map((name, index) =>
                     < li key={index} >
@@ -24,7 +49,7 @@ export default function StepNavigationMenu() {
                                 onClick={() => {
                                     setStepPosition(index);
                                 }}
-                                className={'stepNaviBtn'}
+                                className={isShown? 'stepNaviBtnMobile': 'stepNaviBtn'}
                             >
                                 {name}
                             </button>
@@ -35,7 +60,7 @@ export default function StepNavigationMenu() {
                                 onClick={() => {
                                     setStepPosition(index);
                                 }}
-                                className={'stepNaviBtn'}
+                                className={isShown? 'stepNaviBtnMobile': 'stepNaviBtn'}
                             >
                                 {name}
                             </button>
@@ -56,7 +81,10 @@ export default function StepNavigationMenu() {
                     {step}
                 </button>
             ))} */}
+
         </div >
+  
+            </>
     );
 }
 

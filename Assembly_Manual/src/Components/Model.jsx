@@ -59,7 +59,7 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
 
     const [stepName, setStepName] = useState(false)
     const [stepNameNavi, setStepNameNavi] = useState(false)
-    const [model, setModel] = useState(modelInCopy2)
+    const [model, setModel] = useState(modelOutCopy)
     const [modelOutlineCopy, setModelOutlineCopy] = useState()
     const [modelAux, setModelAux] = useState(modelInCopy)
     const [modelInCurrent, setModelInCurrent] = useState(modelInCopy2)
@@ -83,20 +83,24 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
     const material = new THREE.ShaderMaterial(ConditionalEdgesShader); //for conditional lines
     material.uniforms.diffuse.value.set(0x000000);
 
-    //Fabulaser Mini V3 - steps grouping
+    //steps grouping
     const exceptionArray = [ //shown alone
-        "05_Fix_the_shade_on_the_structure"
+                "07_Place_the_shade_on_the_structure"
+
     ]
     const preparingStepArray = [ //shown grouped
+          [
+ "01_Assemble_the_lamp_shade_-_part_1",
+  "02_Assemble_the_lamp_shade_-_part_2",
+    "03_Assemble_the_lamp_shade_-_part_3"
+        ],
         [
- "03_Assemble_the_lamp_shade_-_part_1",
-  "04_Assemble_the_lamp_shade_-_part_2"
+            "04_Assemble_the_structure",
+            "05_Fix_the_light_bulb_socket",
+            "06_Screw_in_the_light_bulb"
         ]
     ]
     const wiringStepArray = [ //add schematic
-        "111_Wiring_1",
-        "112_Wiring_2",
-        "113_Wiring_3"
     ]
 
     const mainMachineBuildArray = []
@@ -124,13 +128,7 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
                 stepsNames.push(children.name) //for title
                 stepsNamesNavi.push(children.userData.name) //for navigation
             }
-            /*             if (children.isMesh) {
-                            let geoClone = new BufferGeometry()
-                            geoClone = children.geometry.clone()
-                            setGeoGroup(geoClone)
-                        } */
         }, [])
-
 
         //sorts the step titles in the correct order for title
         stepsNames.sort()
@@ -279,8 +277,8 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
                 machineMaterial.dispose()
             }
         })
-
-        setCurrentStepObj(modelInCopy.getObjectByName(stepName[0]))
+  
+        setCurrentStepObj(modelOutCopy.getObjectByName(stepName[0]))
         setCurrentObj(model.getObjectByName(stepName[0]))
 
         partsListChange()
@@ -293,6 +291,7 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
     const wiringStep = useInterface((state) => { return state.wiringStep })
     const isWiringStep = useInterface((state) => { return state.isWiringStep })
     const isNotWiringStep = useInterface((state) => { return state.isNotWiringStep })
+    
     if (wiringStepArray.some(arr => arr.includes(stepName[stepCount]))) {
         isWiringStep()
     }
@@ -307,7 +306,6 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
     }, [stepName, stepCount])
 
     useEffect(() => {
-        console.log(currentStepObject)
         partsListChange()
     }, [stepName, stepCount, currentStepObject])
 
@@ -376,6 +374,10 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
                     //finds the name of the parts in the current step
                     if (children.isGroup && children.userData.name != undefined) {
                         partsNamesArray.push(children.userData.name)
+                    }
+                    if (children.isMesh && children.name=="Light_Bulb*"){
+                                                partsNamesArray.push(children.userData.name)
+
                     }
                     //unifies repeated names
                     uniqueNames = [...new Set(partsNamesArray)]
@@ -499,10 +501,16 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
             const geometriesArray = []
             for (let i = 0; i < currentModel.children.length; i++) {
                 currentModel.children[i].traverse((mesh) => {
+                    if(mesh.isMesh && mesh.parent.userData.name.includes(currentModel.children[i].userData.name)){
+                        mesh.frustumCulled = false //fixes disappearing faces
+                        //const clonedGeometry = mesh.geometry.clone()
+                        geometriesArray.push(mesh.geometry)
+                    }
+                    
                     if (mesh.isMesh && selectedParts.includes(currentModel.children[i].userData.name)) {
                         mesh.frustumCulled = false //fixes disappearing faces
-                        const clonedGeometry = mesh.geometry.clone()
-                        geometriesArray.push(clonedGeometry)
+                        //const clonedGeometry = mesh.geometry.clone()
+                        //geometriesArray.push(clonedGeometry)
                         mesh.material = highlightMaterial
                         var geometry = new EdgesGeometry(mesh.geometry, 20); // or WireframeGeometry
                         var wireframeHighlight = new LineSegments(geometry, lineHighlightMat);
@@ -510,15 +518,17 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
                         highlightMaterial.dispose()
                         geometry.dispose()
                         lineHighlightMat.dispose()
-                    } else if (mesh.isMesh && currentModel.children[i].userData.name != "Curves") {
+                    }  else if (mesh.isMesh && currentModel.children[i].userData.name != "Curves") {
                         mesh.frustumCulled = false //fixes disappearing faces
                         mesh.material = machineCurrentMaterial
+                        //const clonedGeometry = mesh.geometry.clone()
+                        //geometriesArray.push(clonedGeometry)
                         var geometry = new EdgesGeometry(mesh.geometry, 20); // or WireframeGeometry
                         var wireframe = new LineSegments(geometry, lineMat);
                         mesh.add(wireframe);
                         geometry.dispose()
                         lineMat.dispose()
-                    }
+                    } 
                     else if (mesh.userData.name === "Curves") { //Assigns material to curves
                         mesh.frustumCulled = false //fixes disappearing faces
                         mesh.material = curvesMaterial
@@ -533,13 +543,26 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
                         }
                         //curvesMaterial.dispose()
                     }
+
+                   /*  if (geometriesArray != []) {
+                const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometriesArray)
+                                console.log(mergedGeometry)
+
+            } */
                 })
-            }
-            if (geometriesArray != undefined) {
-                //console.log(geometriesArray)
-                //const mergedGeometry = BufferGeometryUtils.mergeGeometries(geometriesArray)
-            }
+/* if (geometriesArray != undefined) {
+                    const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometriesArray)
+                    const newMesh = new Mesh(mergedGeometry, machineCurrentMaterial)
+                    newMesh.name = currentModel.children[i].userData.name
+                    newMesh.material = machineCurrentMaterial
+                    console.log(currentModel)
+                }  */            }
             setSavedSelectedParts(selectedParts)
+             /*  if (geometriesArray != []) {
+                const mergedGeometry = BufferGeometryUtils.mergeBufferGeometries(geometriesArray)
+                                console.log(mergedGeometry)
+
+            }  */
         }
 
     })
@@ -559,7 +582,6 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
         /*         const raycaster = new THREE.Raycaster();
                 raycaster.firstHitOnly = true;
                 raycaster.intersectObjects(event.object); */
-        console.log(event.object)
         //}
 
     })
@@ -658,6 +680,7 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
             }
             else if (isPreparingStep) {
                 console.log("preparing step")
+                console.log(currentModel)
                 currentModel.visible = true;
                 preparingStepChange()
 
@@ -685,6 +708,7 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
     //const effect = new OutlineEffect(gl)
     // }, []);
     const [hovered, hover] = useState(null)
+    
     return <>
 
         <Selection>

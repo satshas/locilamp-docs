@@ -26,7 +26,7 @@ export default function CenterModel({ cameraControlsRef }) {
 
     }, [currentStepObject, cameraPositionTag])
 
-    useEffect(() => {
+/*     useEffect(() => {
         if (selectedPartsModel) {
             api.refresh(selectedPartsModel).fit()
             invalidate()
@@ -35,6 +35,6 @@ export default function CenterModel({ cameraControlsRef }) {
             api.refresh(visibleObj).fit()
             invalidate()
         }
-    }, [selectedPartsModel])
+    }, [selectedPartsModel]) */
 
 }

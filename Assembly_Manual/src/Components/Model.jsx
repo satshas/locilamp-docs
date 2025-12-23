@@ -85,13 +85,12 @@ export default function Model({ modelIn, modelOut, modelInCopy, modelInCopy2, mo
 
     //Fabulaser Mini V3 - steps grouping
     const exceptionArray = [ //shown alone
-        "05_Fix_the_shade_on_the_structure"
-    ]
+"07_Place_the_shade_on_the_structure"    ]
     const preparingStepArray = [ //shown grouped
         [
- "03_Assemble_the_lamp_shade_-_part_1",
-  "04_Assemble_the_lamp_shade_-_part_2"
-        ]
+"04_Assemble_the_structure",
+"05_Fix_the_light_bulb_socket",
+"06_Screw_in_the_light_bulb"        ]
     ]
     const wiringStepArray = [ //add schematic
         "111_Wiring_1",

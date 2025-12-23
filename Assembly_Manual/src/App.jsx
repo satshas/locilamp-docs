@@ -88,8 +88,8 @@ export default function App() {
                         >
                             <Controls />
                             <color args={['#f5f5f5']} attach="background" />
-                                                      {/* <Perf position="bottom-right" /> */}
- 
+                            {/*                             <Perf position="bottom-right" />
+ */}
                             {/* <directionalLight position={[1, 2, 3]} intensity={10} /> */}
                             {/* <ambientLight intensity={10} /> */}
                             <Bounds

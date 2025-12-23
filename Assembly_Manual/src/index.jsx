@@ -48,7 +48,6 @@ class ErrorBoundary extends Component {
 
 
 root.render(
-    
     <>
         <Suspense fallback={<Loader />}>
             <Router>
@@ -62,8 +61,8 @@ root.render(
                         <ErrorBoundary>
                             <Routes>
                                 <Route path='/' element={<App />} />
-{/*                                 <Route path='/HowTo/*' element={<HowToSection />} />
- */}                            </Routes>
+                                <Route path='/HowTo/*' element={<HowToSection />} />
+                            </Routes>
                         </ErrorBoundary>
 
                     </div>
